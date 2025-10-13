@@ -1,12 +1,27 @@
 console.log("🎮 CMPM 121 – Incremental demo");
 
 let units = 0; // current count
-let growthPerSec = 0; // auto growth rate (units/second) — Step 5 starts at 0
-let upgrades = 0; // number of upgrades purchased
-const UPGRADE_COST = 10; // flat 10 units per purchase (per spec)
 
 const EMOJI = "🐝";
 const UNIT_LABEL = "honey";
+
+//Step 6 & 7: Multiple upgrades and price increase
+interface Item {
+  key: string;
+  name: string;
+  cost: number;
+  rate: number;
+  count: number;
+  button?: HTMLButtonElement;
+  countSpan?: HTMLSpanElement;
+  costSpan?: HTMLSpanElement;
+}
+
+const items: Item[] = [
+  { key: "A", name: "A", cost: 10, rate: 0.1, count: 0 },
+  { key: "B", name: "B", cost: 100, rate: 2.0, count: 0 },
+  { key: "C", name: "C", cost: 1000, rate: 50, count: 0 },
+];
 
 const app = document.createElement("div");
 app.style.fontFamily = "system-ui, sans-serif";
@@ -26,6 +41,11 @@ readout.style.fontSize = "1.5rem";
 readout.style.margin = "0.5rem 0 1rem";
 app.append(readout);
 
+// (Step 6)
+const rateLine = document.createElement("div");
+rateLine.style.opacity = "0.9";
+app.append(rateLine);
+
 // Step 1: Click button
 const clickBtn = document.createElement("button");
 clickBtn.textContent = `${EMOJI} Click me!`;
@@ -35,79 +55,105 @@ clickBtn.style.borderRadius = "0.75rem";
 clickBtn.style.cursor = "pointer";
 app.append(clickBtn);
 
-const upgradeBtn = document.createElement("button");
-upgradeBtn.textContent =
-  `Buy upgrade (+1 ${UNIT_LABEL}/sec) – Cost: ${UPGRADE_COST}`;
-upgradeBtn.style.fontSize = "1rem";
-upgradeBtn.style.padding = "0.5rem 0.8rem";
-upgradeBtn.style.marginLeft = "1rem";
-upgradeBtn.style.borderRadius = "0.75rem";
-upgradeBtn.style.cursor = "pointer";
-app.append(upgradeBtn);
+const shopHeader = document.createElement("h2");
+shopHeader.textContent = "Upgrades";
+shopHeader.style.marginTop = "1rem";
+app.append(shopHeader);
+
+const shopList = document.createElement("div");
+shopList.style.display = "grid";
+shopList.style.gridTemplateColumns = "1fr";
+shopList.style.gap = "0.5rem";
+app.append(shopList);
 
 // Logic
 function formatUnits(x: number): string {
   const isNearlyInt = Math.abs(x - Math.round(x)) < 1e-6;
   return isNearlyInt ? Math.round(x).toLocaleString() : x.toFixed(1);
 }
-
-function pluralize(label: string, _amount: number): string {
-  return label;
+function totalRate(): number {
+  return items.reduce((s, it) => s + it.count * it.rate, 0);
 }
 
-// Status display
-const status = document.createElement("div");
-status.style.fontSize = "1rem";
-status.style.margin = "0.5rem 0 1rem";
-app.append(status);
+function buildShop() {
+  shopList.innerHTML = "";
+  items.forEach((it) => {
+    const row = document.createElement("div");
+    row.style.display = "grid";
+    row.style.gridTemplateColumns = "minmax(0,1fr) auto";
+    row.style.alignItems = "center";
+    row.style.gap = "0.75rem";
+    row.style.padding = "0.6rem 0.8rem";
+    row.style.border = "1px solid #ddd";
+    row.style.borderRadius = "0.75rem";
+
+    const left = document.createElement("div");
+    const name = document.createElement("div");
+    name.style.fontWeight = "600";
+    name.textContent = `Item ${it.name}`;
+    const stats = document.createElement("div");
+    const countSpan = document.createElement("span");
+    const rateSpan = document.createElement("span");
+    rateSpan.textContent = ` | ${it.rate} ${UNIT_LABEL}/sec each`;
+    stats.append(countSpan, rateSpan);
+    left.append(name, stats);
+
+    const btn = document.createElement("button");
+    btn.style.padding = "0.5rem 0.8rem";
+    btn.style.borderRadius = "0.75rem";
+    const costSpan = document.createElement("span");
+    costSpan.textContent = `${it.cost} ${UNIT_LABEL}`;
+    btn.append(`Buy Item ${it.name} – `, costSpan);
+
+    btn.addEventListener("click", () => {
+      if (units >= it.cost) {
+        units -= it.cost;
+        it.count += 1;
+        render();
+      }
+    });
+
+    it.button = btn;
+    it.countSpan = countSpan;
+    it.costSpan = costSpan;
+
+    row.append(left, btn);
+    shopList.append(row);
+  });
+}
 
 function render() {
-  readout.textContent = `${formatUnits(units)} ${pluralize(UNIT_LABEL, units)}`;
-  status.textContent = `Upgrades: ${upgrades} | Auto rate: ${
-    growthPerSec.toFixed(1)
-  } ${UNIT_LABEL}/sec`;
-}
+  readout.textContent = `${formatUnits(units)} ${UNIT_LABEL}`;
+  const r = totalRate();
+  rateLine.textContent = `Production: ${r.toFixed(2)} ${UNIT_LABEL}/sec`;
 
-function updateUpgradeButton() {
-  upgradeBtn.disabled = units < UPGRADE_COST;
-  upgradeBtn.style.opacity = upgradeBtn.disabled ? "0.6" : "1";
+  items.forEach((it) => {
+    if (it.countSpan) it.countSpan.textContent = `Owned: ${it.count}`;
+    if (it.button) {
+      const affordable = units >= it.cost;
+      it.button.disabled = !affordable;
+      it.button.style.opacity = affordable ? "1" : "0.6";
+      it.button.style.cursor = affordable ? "pointer" : "not-allowed";
+    }
+  });
 }
 
 // Step 2: clicking increases by 1
 clickBtn.addEventListener("click", () => {
   units += 1;
   render();
-  updateUpgradeButton();
 });
 
 // Steps 3 & 4
-let lastTime = performance.now();
-
+let last = performance.now();
 function tick(now: number) {
-  const dtSec = Math.max(0, (now - lastTime) / 1000);
-  lastTime = now;
-
-  if (growthPerSec > 0) {
-    units += growthPerSec * dtSec;
-    render();
-    updateUpgradeButton();
-  }
-
+  const dt = (now - last) / 1000;
+  last = now;
+  units += totalRate() * dt;
+  render();
   requestAnimationFrame(tick);
 }
 
-// Initial render + start loop
+buildShop();
 render();
-updateUpgradeButton();
 requestAnimationFrame(tick);
-
-// Step 5: purchasing an upgrade (+1/sec), costs 10, can buy multiple times
-upgradeBtn.addEventListener("click", () => {
-  if (units >= UPGRADE_COST) {
-    units -= UPGRADE_COST;
-    upgrades += 1;
-    growthPerSec += 1; // each purchase increases the auto rate by 1 unit/sec
-    render();
-    updateUpgradeButton();
-  }
-});
