@@ -79,3 +79,24 @@ clickBtn.addEventListener("click", () => {
   render();
   updateUpgradeButton();
 });
+
+// Steps 3 & 4
+let lastTime = performance.now();
+
+function tick(now: number) {
+  const dtSec = Math.max(0, (now - lastTime) / 1000);
+  lastTime = now;
+
+  if (growthPerSec > 0) {
+    units += growthPerSec * dtSec;
+    render();
+    updateUpgradeButton();
+  }
+
+  requestAnimationFrame(tick);
+}
+
+// Initial render + start loop
+render();
+updateUpgradeButton();
+requestAnimationFrame(tick);
