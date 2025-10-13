@@ -1,8 +1,8 @@
 console.log("🎮 CMPM 121 – Incremental demo");
 
 let units = 0; // current count
-const growthPerSec = 0; // auto growth rate (units/second) — Step 5 starts at 0
-const upgrades = 0; // number of upgrades purchased
+let growthPerSec = 0; // auto growth rate (units/second) — Step 5 starts at 0
+let upgrades = 0; // number of upgrades purchased
 const UPGRADE_COST = 10; // flat 10 units per purchase (per spec)
 
 const EMOJI = "🐝";
@@ -100,3 +100,14 @@ function tick(now: number) {
 render();
 updateUpgradeButton();
 requestAnimationFrame(tick);
+
+// Step 5: purchasing an upgrade (+1/sec), costs 10, can buy multiple times
+upgradeBtn.addEventListener("click", () => {
+  if (units >= UPGRADE_COST) {
+    units -= UPGRADE_COST;
+    upgrades += 1;
+    growthPerSec += 1; // each purchase increases the auto rate by 1 unit/sec
+    render();
+    updateUpgradeButton();
+  }
+});
