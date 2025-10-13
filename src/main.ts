@@ -1,8 +1,8 @@
 console.log("🎮 CMPM 121 – Incremental demo");
 
 let units = 0; // current count
-let growthPerSec = 0; // auto growth rate (units/second) — Step 5 starts at 0
-let upgrades = 0; // number of upgrades purchased
+const growthPerSec = 0; // auto growth rate (units/second) — Step 5 starts at 0
+const upgrades = 0; // number of upgrades purchased
 const UPGRADE_COST = 10; // flat 10 units per purchase (per spec)
 
 const EMOJI = "🐝";
@@ -45,7 +45,7 @@ upgradeBtn.style.borderRadius = "0.75rem";
 upgradeBtn.style.cursor = "pointer";
 app.append(upgradeBtn);
 
-// Logic 
+// Logic
 function formatUnits(x: number): string {
   const isNearlyInt = Math.abs(x - Math.round(x)) < 1e-6;
   return isNearlyInt ? Math.round(x).toLocaleString() : x.toFixed(1);
@@ -54,6 +54,12 @@ function formatUnits(x: number): string {
 function pluralize(label: string, _amount: number): string {
   return label;
 }
+
+// Status display
+const status = document.createElement("div");
+status.style.fontSize = "1rem";
+status.style.margin = "0.5rem 0 1rem";
+app.append(status);
 
 function render() {
   readout.textContent = `${formatUnits(units)} ${pluralize(UNIT_LABEL, units)}`;
@@ -73,4 +79,3 @@ clickBtn.addEventListener("click", () => {
   render();
   updateUpgradeButton();
 });
-
