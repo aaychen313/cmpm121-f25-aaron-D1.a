@@ -2,6 +2,7 @@ console.log("🎮 CMPM 121 – Incremental demo");
 
 let units = 0; // current count
 
+// Step 8: Theme
 const EMOJI = "🐝";
 const UNIT_LABEL = "honey";
 const PRICE_MULTIPLIER = 1.15;
@@ -18,6 +19,7 @@ interface Item {
   costSpan?: HTMLSpanElement;
 }
 
+// Step 9: Data Driven Design
 const items: Item[] = [
   {
     key: "wildflower",
