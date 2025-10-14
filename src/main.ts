@@ -14,6 +14,7 @@ interface Item {
   baseCost: number;
   rate: number;
   count: number;
+  description: string;
   button?: HTMLButtonElement;
   countSpan?: HTMLSpanElement;
   costSpan?: HTMLSpanElement;
@@ -27,6 +28,7 @@ const items: Item[] = [
     baseCost: 10,
     rate: 0.1,
     count: 0,
+    description: "A small patch of wildflowers to attract bees.",
   },
   {
     key: "beehive",
@@ -34,6 +36,7 @@ const items: Item[] = [
     baseCost: 100,
     rate: 2.0,
     count: 0,
+    description: "A box to house a colony of honeybees.",
   },
   {
     key: "apiarist",
@@ -41,6 +44,23 @@ const items: Item[] = [
     baseCost: 1000,
     rate: 50,
     count: 0,
+    description: "A professional beekeeper to manage your hives.",
+  },
+  {
+    key: "queens",
+    name: "Queen Bees",
+    baseCost: 12000,
+    rate: 120,
+    count: 0,
+    description: "Purchase queen bees to start new colonies.",
+  },
+  {
+    key: "orchard",
+    name: "Blooming Orchard",
+    baseCost: 150000,
+    rate: 2000,
+    count: 0,
+    description: "A large orchard to provide abundant forage for bees.",
   },
 ];
 
