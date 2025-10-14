@@ -19,9 +19,27 @@ interface Item {
 }
 
 const items: Item[] = [
-  { key: "A", name: "A", baseCost: 10, rate: 0.1, count: 0 },
-  { key: "B", name: "B", baseCost: 100, rate: 2.0, count: 0 },
-  { key: "C", name: "C", baseCost: 1000, rate: 50, count: 0 },
+  {
+    key: "wildflower",
+    name: "Wildflower Patch",
+    baseCost: 10,
+    rate: 0.1,
+    count: 0,
+  },
+  {
+    key: "beehive",
+    name: "Beehive Box",
+    baseCost: 100,
+    rate: 2.0,
+    count: 0,
+  },
+  {
+    key: "apiarist",
+    name: "Apiarist",
+    baseCost: 1000,
+    rate: 50,
+    count: 0,
+  },
 ];
 
 document.body.innerHTML = "";
@@ -49,7 +67,7 @@ app.append(rateLine);
 
 // Step 1: Click button
 const clickBtn = document.createElement("button");
-clickBtn.textContent = `${EMOJI} Click me!`;
+clickBtn.textContent = `${EMOJI} Click me! (+1 honey)`;
 clickBtn.style.fontSize = "1.2rem";
 clickBtn.style.padding = "0.6rem 1rem";
 clickBtn.style.borderRadius = "0.75rem";
@@ -92,7 +110,7 @@ function buildShop() {
     const left = document.createElement("div");
     const name = document.createElement("div");
     name.style.fontWeight = "600";
-    name.textContent = `Item ${it.name}`;
+    name.textContent = it.name;
     const stats = document.createElement("div");
     const countSpan = document.createElement("span");
     const rateSpan = document.createElement("span");
@@ -104,7 +122,7 @@ function buildShop() {
     btn.style.padding = "0.5rem 0.8rem";
     btn.style.borderRadius = "0.75rem";
     const costSpan = document.createElement("span");
-    btn.append(`Buy Item ${it.name} – `, costSpan);
+    btn.append(`Buy ${it.name} – `, costSpan);
 
     btn.addEventListener("click", () => {
       const cost = currentCost(it);
