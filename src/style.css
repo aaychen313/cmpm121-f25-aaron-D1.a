@@ -1,5 +1,55 @@
-.icon {
-  width: 64px;
-  vertical-align: top;
-  border: 1px solid salmon;
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: #fffbc7;
+}
+
+.upgrade-btn {
+  --btn-bg: #d8c263;
+  --btn-bg-hover: #dfca14;
+  --btn-bg-active: #ffee00;
+  --btn-text: #000000;
+  --btn-border: rgba(0, 0, 0, 0.15);
+
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--btn-border);
+  padding: 0.55rem 0.9rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 120ms ease, transform 60ms ease, box-shadow 120ms ease;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.upgrade-btn:hover {
+  background: var(--btn-bg-hover);
+}
+.upgrade-btn:active {
+  background: var(--btn-bg-active);
+  transform: translateY(1px);
+}
+
+/* Focus ring for keyboard users */
+.upgrade-btn:focus-visible {
+  outline: 3px solid rgba(255, 236, 61, 0.45);
+  outline-offset: 2px;
+}
+
+/* Disabled/locked state */
+.upgrade-btn:disabled,
+.upgrade-btn[aria-disabled="true"],
+.upgrade-btn[data-locked="true"] {
+  background: #cbd5e1; /* slate-300 */
+  color: #475569; /* slate-600 */
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Optional: “unaffordable” visual without disabling click */
+.upgrade-btn[data-affordable="false"] {
+  filter: grayscale(0.4) brightness(0.95);
+  opacity: 0.75;
 }

@@ -1,3 +1,10 @@
 # CMPM 121 D1 Project
 
-This is the starting point for your CMPM 121 D1 project. The goal of this project is to create a simple web application using TypeScript, Vite, and modern web development practices. Students should make sure to remove _this_ content from their README.md file and replace it with their own project documentation.
+Credits:
+ThatGuylain https://github.com/ThatGuyIain/cmpm-121-incremental-game
+
+- gave me inspiration to add color to the background
+
+RTalaro https://github.com/RTalaro/CMPM-121-Greedy-So-Feed-Me
+
+- gave me inspiration to color the clickable buttons.

@@ -1,10 +1,12 @@
+import "./style.css";
+
 let units = 0; // current count
 
 function styleButton(
   btn: HTMLButtonElement,
   opts?: { padding?: string; radius?: string },
 ) {
-  // Apply common button styles with sensible defaults
+  btn.classList.add("upgrade-btn");
   btn.style.padding = opts?.padding ?? "0.5rem 0.8rem";
   btn.style.borderRadius = opts?.radius ?? "0.75rem";
 }
