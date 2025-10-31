@@ -1,11 +1,21 @@
-console.log("🎮 CMPM 121 – Incremental demo");
-
 let units = 0; // current count
+
+function styleButton(btn: HTMLButtonElement, opts?: { padding?: string; radius?: string }) {
+  // Apply common button styles with sensible defaults
+  btn.style.padding = opts?.padding ?? "0.5rem 0.8rem";
+  btn.style.borderRadius = opts?.radius ?? "0.75rem";
+}
 
 // Step 8: Theme
 const EMOJI = "🐝";
 const UNIT_LABEL = "honey";
 const PRICE_MULTIPLIER = 1.15;
+
+
+/**
+ * The optional DOM references are populated during UI construction so game logic can update UI state efficiently.
+ * This intentionally mixes data and presentation for simplicity
+ */
 
 //Step 6 & 7: Multiple upgrades and price increase
 interface Item {
@@ -91,8 +101,7 @@ app.append(rateLine);
 const clickBtn = document.createElement("button");
 clickBtn.textContent = `${EMOJI} Click me! (+1 honey)`;
 clickBtn.style.fontSize = "1.2rem";
-clickBtn.style.padding = "0.6rem 1rem";
-clickBtn.style.borderRadius = "0.75rem";
+styleButton(clickBtn, { padding: "0.6rem 1rem" });
 clickBtn.style.cursor = "pointer";
 app.append(clickBtn);
 
@@ -141,8 +150,7 @@ function buildShop() {
     left.append(name, stats);
 
     const btn = document.createElement("button");
-    btn.style.padding = "0.5rem 0.8rem";
-    btn.style.borderRadius = "0.75rem";
+    styleButton(btn);
     const costSpan = document.createElement("span");
     btn.append(`Buy ${it.name} – `, costSpan);
 
