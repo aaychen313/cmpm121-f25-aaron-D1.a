@@ -1,6 +1,9 @@
 let units = 0; // current count
 
-function styleButton(btn: HTMLButtonElement, opts?: { padding?: string; radius?: string }) {
+function styleButton(
+  btn: HTMLButtonElement,
+  opts?: { padding?: string; radius?: string },
+) {
   // Apply common button styles with sensible defaults
   btn.style.padding = opts?.padding ?? "0.5rem 0.8rem";
   btn.style.borderRadius = opts?.radius ?? "0.75rem";
@@ -10,7 +13,6 @@ function styleButton(btn: HTMLButtonElement, opts?: { padding?: string; radius?:
 const EMOJI = "🐝";
 const UNIT_LABEL = "honey";
 const PRICE_MULTIPLIER = 1.15;
-
 
 /**
  * The optional DOM references are populated during UI construction so game logic can update UI state efficiently.
